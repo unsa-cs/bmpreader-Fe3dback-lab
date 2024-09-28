@@ -13,10 +13,7 @@ void display() {
 }
 
 int main(int argc, char **argv) {
-  if (argc < 2) {
-    printf("Por favor, ingrese un archivo valido");
-    return 1;
-  }  
+
   image = readBMP(argv[1]);
   if (!image) return 1;
 
