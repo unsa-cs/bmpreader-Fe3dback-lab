@@ -12,19 +12,22 @@ void display() {
   glFlush();
 }
 
-int main() {
-  char filename[256];
+int main(int argc, char **argv) {
 
-  // Pedir al usuario el nombre del archivo BMP
-  printf("Ingrese el nombre del archivo BMP (con extensión): ");
-  scanf("%255s", filename);
-
-  image = readBMP(filename);
+  image = readBMP(argv[1]);
   if (!image) return 1;
 
+  //Bucle para cambiar todas las matrices de color a b y n
+  for (int y = 0; y < (int)image->height; y++) {
+    for (int x = 0; x < (int)image->width; x++) {
+      unsigned char *pixel = &image->data[(y * image->width + x) * 3];
+      unsigned char gray = (unsigned char)(0.299 * pixel[2] + 0.587 * pixel[1] + 0.114 * pixel[0]);
+      pixel[0] = gray;
+      pixel[1] = gray;
+      pixel[2] = gray;
+    }
+  }
   // Inicializar GLUT
-  int argc = 1; // Necesario para evitar problemas con glutInit
-  char *argv[1] = { "" }; // Argumento vacío para GLUT
   glutInit(&argc, argv);
 
   // Establecer el modo de visualización
